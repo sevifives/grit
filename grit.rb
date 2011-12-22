@@ -122,6 +122,7 @@ class Grit
 end
 
 
+# TODO ... this better
 project = Grit.new
 case ARGV[0]
 when 'init'

@@ -24,7 +24,7 @@ grit st
 
 >>
 
-[master][~/orion]$ grit st
+[master][~/proj]$ grit st
 Performing operation st on Root
 # On branch master
 # Your branch is ahead of 'origin/master' by 1 commit.
@@ -36,3 +36,17 @@ nothing to commit (working directory clean)
 Performing operation st on SCUI
 # On branch master
 nothing to commit (working directory clean)
+
+grit on REPO_NAME_CASE GIT_OPERATION
+will perform that operation on the repo you want
+
+[master][~/orion]$ grit on sproutcore st
+# sproutcore$ git st
+# On branch master
+nothing to commit (working directory clean)
+
+grit on Root
+is pwd repo... which is lame since you can just git COMMAND
+
+grit add-repository new_name path/to/repo
+grit remove-repository new_name
