@@ -18,3 +18,21 @@ Sample config.yml
     :path: frameworks/sproutcore
   - :name: SCUI
     :path: frameworks/scui
+
+In your main proj directory
+grit st
+
+>>
+
+[master][~/orion]$ grit st
+Performing operation st on Root
+# On branch master
+# Your branch is ahead of 'origin/master' by 1 commit.
+#
+nothing to commit (working directory clean)
+Performing operation st on Sproutcore
+# On branch master
+nothing to commit (working directory clean)
+Performing operation st on SCUI
+# On branch master
+nothing to commit (working directory clean)
