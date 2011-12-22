@@ -1,0 +1,20 @@
+Grit is just a simple tool to align your multiple repositories. It's not overwhelmingly complex; it's just a proxy for git commands to your main repo and your other repos.
+
+Get started:
+Drop the grit.rb somewhere
+chmod +x it
+ln -s ~/path/to/grit.rb /usr/local/bin/grit
+
+Go to your project
+grit init
+
+Will generate .grit/config.yml
+
+Sample config.yml
+--- 
+:root: /Users/Bono/the_world
+:repositories: 
+  - :name: Sproutcore
+    :path: frameworks/sproutcore
+  - :name: SCUI
+    :path: frameworks/scui
