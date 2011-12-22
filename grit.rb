@@ -2,6 +2,8 @@
 
 # Grit is a way to manage multiple repos in a git repository seamlessly
 # using the git CL tool
+# It serves 'only' to be a mapping tool; it doesn't create/delete repositories
+# only .grit/config.yml
 
 # What Grit should do:
 # - Proxy the git API
@@ -66,15 +68,24 @@ class Grit
 
   def perform_on (repo_name,args)
     repo = get_repository(repo_name)
+    args = args.join(' ') unless args.class == String
 
+    if repo.nil? || repo[:path].nil? || !File.exists?(repo[:path])
+      puts "Can't find repository: #{repo_name} at location #{repo[:path]}"
+      abort
+    end
+
+    Dir.chdir(repo[:path]) do |d|
+      perform(args,repo[:name])
+    end
   end
 
+  # opting to not remove the directory
   def remove_repository (names)
     config = get_config
     puts config.inspect
 
-    match = config[:repositories].detect{|f| f[:name] == name}
-    puts match.inspect
+    match = get_repository(names[0])
     unless match.nil?
       if config[:repositories].delete(match)
         write_config(config)
@@ -87,7 +98,8 @@ class Grit
     end
   end
 
-  def perform (to_do)
+  def perform (to_do,name)
+    puts "# #{name}$ git #{to_do}" unless name.nil?
     puts `git #{to_do}`
   end
 
@@ -97,10 +109,13 @@ class Grit
 
     to_do = args.join(' ')
     repositories.each do |repo|
-      puts "Performing operation #{to_do} on #{repo[:name]}"
-      raise "Shit!" if repo[:path].nil?
+      if repo[:path].nil?
+        puts "Can't find repository: #{repo[:path]}"
+        continue
+      end
+
       Dir.chdir(repo[:path]) do |d|
-         perform(to_do)
+         perform(to_do,repo[:name])
       end
     end
   end
@@ -116,7 +131,7 @@ when 'add-repository'
 when 'remove-repository'
   project.remove_repository(ARGV[1..-1])
 when 'on'
-  project.perform_on(ARG[1],ARGV[2..-1])
+  project.perform_on(ARGV[1],ARGV[2..-1])
 else
   project.proceed ARGV
 end
