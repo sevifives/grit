@@ -48,10 +48,9 @@ class Grit
     repositories = config[:repositories].unshift({:name => 'Root',:path => config[:root]})
 
     to_do = args.join(' ')
-    puts repositories.inspect
     repositories.each do |repo|
       puts "Performing operation #{to_do} on #{repo[:name]}"
-      raise "Shit!" if path.nil?
+      raise "Shit!" if repo[:path].nil?
       Dir.chdir(repo[:path]) do |d|
         puts `git #{to_do}`
       end
