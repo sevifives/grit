@@ -12,9 +12,9 @@
 # - Not require a bunch of retarded crap like Google's git-repo to get started
 
 # Sample config.yml
-# --- 
+# ---
 # :root: /Users/john/my_project
-# :repositories: 
+# :repositories:
 #   - :name: Sproutcore
 #     :path: frameworks/sproutcore
 #   - :name: SCUI
@@ -99,8 +99,11 @@ class Grit
   end
 
   def perform (to_do,name)
-    puts "# #{name}$ git #{to_do}" unless name.nil?
+    puts "-"*80
+    puts "# #{name.upcase} -- git #{to_do}" unless name.nil?
     puts `git #{to_do}`
+    puts "-"*80
+    puts ""
   end
 
   def proceed (args)
