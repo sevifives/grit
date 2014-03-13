@@ -110,7 +110,10 @@ class Grit
     config = get_config
     repositories = config[:repositories].unshift({:name => 'Root',:path => config[:root]})
 
-    to_do = args.join(' ')
+    puts "#{args}"
+
+    to_do = args.map{|x| if x.include?(" "); "\"#{x}\""; else; x; end}.join(" ")
+
     repositories.each do |repo|
       if repo[:path].nil?
         puts "Can't find repository: #{repo[:path]}"
