@@ -110,8 +110,6 @@ class Grit
     config = get_config
     repositories = config[:repositories].unshift({:name => 'Root',:path => config[:root]})
 
-    puts "#{args}"
-
     to_do = args.map{|x| if x.include?(" "); "\"#{x}\""; else; x; end}.join(" ")
 
     repositories.each do |repo|
