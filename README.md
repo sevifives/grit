@@ -1,14 +1,15 @@
 # Grit
 Grit is just a simple tool to align your multiple repositories. It's just a proxy for git commands to your main repo and your other repos.
 
-## Get started:
+## Getting started:
+Clone the repo and put the executable in your PATH
 ```
 git clone https://github.com/mlintern/grit.git ~/.grit
 chmod +x ~/.grit/grit.rb
 ln -s ~/.grit/grit.rb /usr/local/bin/grit
 ```
 
-### Create a new project:
+### Creating a new project:
 ```
 [master][~/proj]$ grit init
 ```
@@ -27,19 +28,18 @@ Will generate .grit/config.yml
 :ignore_root: false
 ```
 
-### Add Repository:
+### Adding a Repository:
 ```
 grit add-repository new_name path/to/repo
 ```
 
-### Remove Repository:
+### Removing a Repository:
 ```
 grit remove-repository new_name
 ```
 
-### Execute Commands:
+### Executing Commands:
 grit status
-
 ```
 [master][~/proj]$ grit status
 Performing operation status on Root
@@ -57,16 +57,16 @@ Performing operation status on SCUI
 nothing to commit (working directory clean)
 ```
 
-### grit on REPO_NAME_CASE GIT_OPERATION
-will perform that operation on the repo you want
+### Executing on a Single Repoository
+grit on REPO_NAME_CASE GIT_OPERATION will perform that operation on the repo you want
 ```
-[master][~/orion]$ grit on sproutcore st
+[master][~/orion]$ grit on sproutcore status
 # sproutcore$ git st
 # On branch master
 nothing to commit (working directory clean)
 ```
 
-### and to make git ignoring easier...
+### Might want to add .grit/ to global gitignore
 ```
 git config --global core.excludesfile ~/.gitignore
 printf ".grit/" >> ~/.gitignore
