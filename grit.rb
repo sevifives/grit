@@ -8,9 +8,8 @@
 
 # What Grit should do:
 # - Proxy the git API
-# - Don't get in the way
+# - Not get in the way
 # - Allow the user to make the normal git choices due to that proxy
-# - Not require a bunch of retarded crap like Google's git-repo to get started
 
 # Sample config.yml
 # ---
@@ -82,7 +81,6 @@ class Grit
     end
   end
 
-  # opting to not remove the directory
   def remove_repository(names)
     config = load_config
     puts config.inspect
@@ -129,7 +127,6 @@ class Grit
   end
 end
 
-# TODO: ... this better
 project = Grit.new
 case ARGV[0]
 when 'init'
