@@ -36,7 +36,8 @@ class Grit
       unless File.exist?(config_file)
         config = {}
         config[:root] ||= Dir.pwd
-        config[:repositories] ||= []
+        config[:repositories] ||= [{name: "example", path: "example"}]
+        config[:ignore_root] = true
 
         open(directory + '/config.yml', 'w') { |f| YAML.dump(config, f) }
       end
@@ -72,7 +73,7 @@ class Grit
     args = args.join(' ') unless args.class == String
 
     if repo.nil? || repo[:path].nil? || !File.exist?(repo[:path])
-      puts "Can't find repository: #{repo_name} at location #{repo[:path]}"
+      puts "Can't find repository: #{repo_name}"
       abort
     end
 
