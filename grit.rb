@@ -13,7 +13,7 @@
 
 # Sample config.yml
 # ---
-# :root: /Users/john/my_project
+# :root: /Users/john/dev/my_project
 # :repositories:
 #   - :name: Sproutcore
 #     :path: frameworks/sproutcore
@@ -36,7 +36,7 @@ class Grit
       unless File.exist?(config_file)
         config = {}
         config[:root] ||= Dir.pwd
-        config[:repositories] ||= [{name: "example", path: "example"}]
+        config[:repositories] ||= [{ name: 'example_repo', path: 'example_repo' }]
         config[:ignore_root] = true
 
         open(directory + '/config.yml', 'w') { |f| YAML.dump(config, f) }
