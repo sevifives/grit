@@ -59,7 +59,26 @@ class Grit
     name = args[0]
     path = args[1]
 
+    config[:repositories] = [] if config[:repositories].nil?
+
     config[:repositories].push(name: name, path: path)
+    write_config(config)
+  end
+
+  def add_all_repositories
+    config = load_config
+
+    directories = Dir.entries('.').select
+
+    directories.each do |repo|
+      next if repo == '.grit'
+
+      git_dir = './' + repo + '/.git'
+      next unless File.exist?(git_dir)
+
+      puts "Adding #{repo}"
+      config[:repositories].push(name: repo, path: repo)
+    end
     write_config(config)
   end
 
@@ -134,6 +153,8 @@ when 'init'
   project.initialize_grit(ARGV[1..-1])
 when 'add-repository'
   project.add_repository(ARGV[1..-1])
+when 'add-all'
+  project.add_all_repositories
 when 'remove-repository'
   project.remove_repository(ARGV[1..-1])
 when 'on'
