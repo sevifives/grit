@@ -38,6 +38,11 @@ grit add-repository new_name path/to/repo
 grit remove-repository new_name
 ```
 
+### Clean Up Config:
+```
+grit clean-config
+```
+
 ### Executing Commands:
 grit status
 ```
