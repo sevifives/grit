@@ -92,14 +92,11 @@ class Grit
                    end
 
     config[:repositories] = original_repositories.delete_if do |repo|
-      puts repo
       git_dir = './' + repo[:path] + '/.git'
       if repo[:path].nil? || !File.directory?(repo[:path]) || !File.exist?(git_dir)
-        puts 'true'
         true
       end
     end
-    puts config
     write_config(config)
   end
 
