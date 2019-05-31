@@ -82,6 +82,27 @@ class Grit
     write_config(config)
   end
 
+  def clean_config
+    config = load_config
+
+    original_repositories = if config[:ignore_root]
+                     config[:repositories]
+                   else
+                     config[:repositories].unshift(name: 'Root', path: config[:root])
+                   end
+
+    config[:repositories] = original_repositories.delete_if do |repo|
+      puts repo
+      git_dir = './' + repo[:path] + '/.git'
+      if repo[:path].nil? || !File.directory?(repo[:path]) || !File.exist?(git_dir)
+        puts 'true'
+        true
+      end
+    end
+    puts config
+    write_config(config)
+  end
+
   def get_repository(name)
     config = load_config
     config[:repositories].detect { |f| f[:name] == name }
@@ -155,6 +176,8 @@ when 'add-repository'
   project.add_repository(ARGV[1..-1])
 when 'add-all'
   project.add_all_repositories
+when 'clean-config'
+  project.clean_config
 when 'remove-repository'
   project.remove_repository(ARGV[1..-1])
 when 'on'
