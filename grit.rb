@@ -57,7 +57,7 @@ class Grit
   def add_repository(args)
     config = load_config
     name = args[0]
-    path = args[1]
+    path = args[1] || args[0]
 
     config[:repositories] = [] if config[:repositories].nil?
 
