@@ -28,7 +28,7 @@ class Grit
   def help
     puts "OPTIONS:\n\n"
     puts "\thelp                         - display list of commands"
-    puts "\tinit                         - create grit config.yml file in .grit dir"
+    puts "\tinit <dir> (optional)        - create grit config.yml file in .grit dir"
     puts "\tadd-all                      - add all directories in the current directory to config.yml"
     puts "\tclean-config                 - remove any missing direcotries from config.yml"
     puts "\tadd-repository <name> <dir>  - add repo and dir to config.yml"
@@ -46,7 +46,7 @@ class Grit
       config_file = directory + '/config.yml'
       unless File.exist?(config_file)
         config = {}
-        config['root'] ||= Dir.pwd
+        config['root'] ||= location
         config['repositories'] ||= [{ 'name' => 'example_repo', 'path' => 'example_repo' }]
         config['ignore_root'] = true
 
@@ -126,11 +126,10 @@ class Grit
     end
   end
 
-  def remove_repository(names)
+  def remove_repository(name)
     config = load_config
-    puts config.inspect
 
-    match = get_repository(names[0])
+    match = get_repository(name.to_s)
     if match.nil?
       puts 'Could not find repository'
     elsif config['repositories'].delete(match)
@@ -172,17 +171,17 @@ case ARGV[0]
 when 'help'
   project.help
 when 'init'
-  project.initialize_grit(ARGV[1..-1])
+  project.initialize_grit(ARGV[1])
 when 'add-repository'
-  project.add_repository(ARGV[1..-1])
+  project.add_repository(ARGV[1])
 when 'add-all'
   project.add_all_repositories
 when 'clean-config'
   project.clean_config
 when 'remove-repository'
-  project.remove_repository(ARGV[1..-1])
+  project.remove_repository(ARGV[1])
 when 'on'
-  project.perform_on(ARGV[1], ARGV[2..-1])
+  project.perform_on(ARGV[1], ARGV[2])
 else
   project.proceed ARGV
 end
