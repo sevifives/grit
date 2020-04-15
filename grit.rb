@@ -13,12 +13,12 @@
 
 # Sample config.yml
 # ---
-# :root: /Users/john/dev/my_project
-# :repositories:
-#   - :name: Sproutcore
-#     :path: frameworks/sproutcore
-#   - :name: SCUI
-#     :path: frameworks/scui
+# root: /Users/john/dev/my_project
+# repositories:
+#   - name: Sproutcore
+#     path: frameworks/sproutcore
+#   - name: SCUI
+#     path: frameworks/scui
 
 require 'yaml'
 require 'fileutils'
@@ -46,9 +46,9 @@ class Grit
       config_file = directory + '/config.yml'
       unless File.exist?(config_file)
         config = {}
-        config[:root] ||= Dir.pwd
-        config[:repositories] ||= [{ name: 'example_repo', path: 'example_repo' }]
-        config[:ignore_root] = true
+        config['root'] ||= Dir.pwd
+        config['repositories'] ||= [{ 'name' => 'example_repo', 'path' => 'example_repo' }]
+        config['ignore_root'] = true
 
         File.open(directory + '/config.yml', 'w') { |f| YAML.dump(config, f) }
       end
@@ -58,7 +58,9 @@ class Grit
   end
 
   def load_config
-    File.open(File.join(FileUtils.pwd, '.grit/config.yml')) { |f| YAML.load(f) }
+    config = File.open(File.join(FileUtils.pwd, '.grit/config.yml')) { |f| YAML.load(f) }
+    config['repositories'].unshift('name' => 'Root', 'path' => config['root']) unless config['ignore_root']
+    config
   end
 
   def write_config(config)
@@ -70,9 +72,9 @@ class Grit
     name = args[0]
     path = args[1] || args[0]
 
-    config[:repositories] = [] if config[:repositories].nil?
+    config['repositories'] = [] if config['repositories'].nil?
 
-    config[:repositories].push(name: name, path: path)
+    config['repositories'].push('name' => name, 'path' => path)
     write_config(config)
   end
 
@@ -88,7 +90,7 @@ class Grit
       next unless File.exist?(git_dir)
 
       puts "Adding #{repo}"
-      config[:repositories].push(name: repo, path: repo)
+      config['repositories'].push('name' => repo, 'path' => repo)
     end
     write_config(config)
   end
@@ -96,35 +98,31 @@ class Grit
   def clean_config
     config = load_config
 
-    original_repositories = if config[:ignore_root]
-                              config[:repositories]
-                            else
-                              config[:repositories].unshift(name: 'Root', path: config[:root])
-                            end
+    original_repositories = config['repositories']
 
-    config[:repositories] = original_repositories.delete_if do |repo|
-      git_dir = './' + repo[:path] + '/.git'
-      true if repo[:path].nil? || !File.directory?(repo[:path]) || !File.exist?(git_dir)
+    config['repositories'] = original_repositories.delete_if do |repo|
+      git_dir = './' + repo['path'] + '/.git'
+      true if repo['path'].nil? || !File.directory?(repo['path']) || !File.exist?(git_dir)
     end
     write_config(config)
   end
 
   def get_repository(name)
     config = load_config
-    config[:repositories].detect { |f| f[:name] == name }
+    config['repositories'].detect { |f| f['name'] == name }
   end
 
   def perform_on(repo_name, args)
     repo = get_repository(repo_name)
     args = args.join(' ') unless args.class == String
 
-    if repo.nil? || repo[:path].nil? || !File.exist?(repo[:path])
+    if repo.nil? || repo['path'].nil? || !File.exist?(repo['path'])
       puts "Can't find repository: #{repo_name}"
       abort
     end
 
-    Dir.chdir(repo[:path]) do |_d|
-      perform(args, repo[:name])
+    Dir.chdir(repo['path']) do |_d|
+      perform(args, repo['name'])
     end
   end
 
@@ -135,7 +133,7 @@ class Grit
     match = get_repository(names[0])
     if match.nil?
       puts 'Could not find repository'
-    elsif config[:repositories].delete(match)
+    elsif config['repositories'].delete(match)
       write_config(config)
       puts "Removed repository #{name} from grit"
     else
@@ -153,22 +151,17 @@ class Grit
 
   def proceed(args)
     config = load_config
-    repositories = if config[:ignore_root]
-                     config[:repositories]
-                   else
-                     config[:repositories].unshift(name: 'Root', path: config[:root])
-                   end
 
     to_do = args.map { |x| x.include?(' ') ? "\"#{x}\"" : x }.join(' ')
 
-    repositories.each do |repo|
-      if repo[:path].nil?
-        puts "Can't find repository: #{repo[:path]}"
-        continue
+    config['repositories'].each do |repo|
+      if repo['path'].nil? || !File.exist?(repo['path'])
+        puts "Can't find repository: #{repo['path']}"
+        next
       end
 
-      Dir.chdir(repo[:path]) do |_d|
-        perform(to_do, repo[:name])
+      Dir.chdir(repo['path']) do |_d|
+        perform(to_do, repo['name'])
       end
     end
   end
