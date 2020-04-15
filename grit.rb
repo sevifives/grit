@@ -27,13 +27,15 @@ require 'fileutils'
 class Grit
   def help
     puts 'OPTIONS:'
-    puts 'help'
-    puts 'init'
-    puts 'add-all'
-    puts 'clean-config'
-    puts 'add-repository <name> <path/to/repo>'
-    puts 'remove-repository <name>'
-    puts 'on <name> <action>'
+    puts ''
+    puts '  help                         - display list of commands'
+    puts '  init                         - create grit config.yml file in .grit dir'
+    puts '  add-all                      - add all directories in the current directory to config.yml'
+    puts '  clean-config                 - remove any missing direcotries from config.yml'
+    puts '  add-repository <name> <dir>  - add repo and dir to config.yml'
+    puts '  remove-repository <name>     - remove specified repo from config.yml'
+    puts '  on <repo> <action>           - execute git action on specific repo'
+    puts ''
   end
 
   def initialize_grit(args)
