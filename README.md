@@ -19,13 +19,13 @@ Will generate .grit/config.yml
 ## Sample config.yml
 ```
 ---
-:root: /Users/Bono/the_world
-:repositories:
-  - :name: Sproutcore
-    :path: frameworks/sproutcore
-  - :name: SCUI
-    :path: frameworks/scui
-:ignore_root: false
+root: /Users/Bono/the_world
+repositories:
+  - name: Sproutcore
+    path: frameworks/sproutcore
+  - name: SCUI
+    path: frameworks/scui
+ignore_root: false
 ```
 
 ### Adding all Repositories in Directory:
