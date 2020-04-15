@@ -27,25 +27,21 @@ repositories:
     path: frameworks/scui
 ignore_root: false
 ```
+### Command Options
+```
+OPTIONS:
 
-### Adding all Repositories in Directory:
-```
-grit add-all
-```
-
-### Adding a Repository:
-```
-grit add-repository new_name path/to/repo
-```
-
-### Removing a Repository:
-```
-grit remove-repository new_name
-```
-
-### Clean Up Config:
-```
-grit clean-config
+	help                         - display list of commands
+	init <dir> (optional)        - create grit config.yml file in .grit dir
+	add-all                      - add all directories in the current directory to config.yml
+	config                       - show current config settings
+	clean-config                 - remove any missing direcotries from config.yml
+	convert-config               - convert conf from sym to string
+	add-repository <name> <dir>  - add repo and dir to config.yml
+	remove-repository <name>     - remove specified repo from config.yml
+	destroy                      - delete current grit setup including config and .grit directory
+	on <repo> <action>           - execute git action on specific repo
+	version                      - get current grit version
 ```
 
 ### Executing Commands:

@@ -42,8 +42,8 @@ class Grit
     puts "\tadd-repository <name> <dir>  - add repo and dir to config.yml"
     puts "\tremove-repository <name>     - remove specified repo from config.yml"
     puts "\tdestroy                      - delete current grit setup including config and .grit directory"
-    puts "\ton <repo> <action>           - execute git action on specific repo\n\n"
-    puts "\tversion                      - get current grit version"
+    puts "\ton <repo> <action>           - execute git action on specific repo"
+    puts "\tversion                      - get current grit version\n\n"
   end
 
   def initialize_grit(args)
