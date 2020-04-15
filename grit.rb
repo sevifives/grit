@@ -50,7 +50,7 @@ class Grit
         config[:repositories] ||= [{ name: 'example_repo', path: 'example_repo' }]
         config[:ignore_root] = true
 
-        open(directory + '/config.yml', 'w') { |f| YAML.dump(config, f) }
+        File.open(directory + '/config.yml', 'w') { |f| YAML.dump(config, f) }
       end
     else
       puts "Directory doesn't exist!"
@@ -58,11 +58,11 @@ class Grit
   end
 
   def load_config
-    open(File.join(FileUtils.pwd, '.grit/config.yml')) { |f| YAML.load(f) }
+    File.open(File.join(FileUtils.pwd, '.grit/config.yml')) { |f| YAML.load(f) }
   end
 
   def write_config(config)
-    open(File.join(FileUtils.pwd, '.grit/config.yml'), 'w') { |f| YAML.dump(config, f) }
+    File.open(File.join(FileUtils.pwd, '.grit/config.yml'), 'w') { |f| YAML.dump(config, f) }
   end
 
   def add_repository(args)
