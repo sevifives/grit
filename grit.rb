@@ -58,7 +58,7 @@ class Grit
   end
 
   def load_config
-    config = File.open(File.join(FileUtils.pwd, '.grit/config.yml')) { |f| YAML.load(f) }
+    config = File.open(File.join(FileUtils.pwd, '.grit/config.yml')) { |f| YAML.safe_load(f) }
     config['repositories'].unshift('name' => 'Root', 'path' => config['root']) unless config['ignore_root']
     config
   end
