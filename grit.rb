@@ -25,6 +25,12 @@ require 'fileutils'
 
 # Grit Class
 class Grit
+  VERSION = '0.2.0'
+
+  def version
+    VERSION
+  end
+
   def help
     puts "OPTIONS:\n\n"
     puts "\thelp                         - display list of commands"
@@ -166,22 +172,24 @@ class Grit
   end
 end
 
-project = Grit.new
+grit = Grit.new
 case ARGV[0]
 when 'help'
-  project.help
+  grit.help
 when 'init'
-  project.initialize_grit(ARGV[1])
+  grit.initialize_grit(ARGV[1])
 when 'add-repository'
-  project.add_repository(ARGV[1])
+  grit.add_repository(ARGV[1])
 when 'add-all'
-  project.add_all_repositories
+  grit.add_all_repositories
 when 'clean-config'
-  project.clean_config
+  grit.clean_config
 when 'remove-repository'
-  project.remove_repository(ARGV[1])
+  grit.remove_repository(ARGV[1])
 when 'on'
-  project.perform_on(ARGV[1], ARGV[2])
+  grit.perform_on(ARGV[1], ARGV[2])
+when /version|-v|--version/
+  puts grit.version
 else
-  project.proceed ARGV
+  grit.proceed(ARGV)
 end
