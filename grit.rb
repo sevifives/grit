@@ -25,6 +25,17 @@ require 'fileutils'
 
 # Grit Class
 class Grit
+  def help
+    puts 'OPTIONS:'
+    puts 'help'
+    puts 'init'
+    puts 'add-all'
+    puts 'clean-config'
+    puts 'add-repository <name> <path/to/repo>'
+    puts 'remove-repository <name>'
+    puts 'on <name> <action>'
+  end
+
   def initialize_grit(args)
     location = args[0] || Dir.pwd
 
@@ -86,16 +97,14 @@ class Grit
     config = load_config
 
     original_repositories = if config[:ignore_root]
-                     config[:repositories]
-                   else
-                     config[:repositories].unshift(name: 'Root', path: config[:root])
-                   end
+                              config[:repositories]
+                            else
+                              config[:repositories].unshift(name: 'Root', path: config[:root])
+                            end
 
     config[:repositories] = original_repositories.delete_if do |repo|
       git_dir = './' + repo[:path] + '/.git'
-      if repo[:path].nil? || !File.directory?(repo[:path]) || !File.exist?(git_dir)
-        true
-      end
+      true if repo[:path].nil? || !File.directory?(repo[:path]) || !File.exist?(git_dir)
     end
     write_config(config)
   end
@@ -167,6 +176,8 @@ end
 
 project = Grit.new
 case ARGV[0]
+when 'help'
+  project.help
 when 'init'
   project.initialize_grit(ARGV[1..-1])
 when 'add-repository'

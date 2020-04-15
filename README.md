@@ -28,6 +28,11 @@ Will generate .grit/config.yml
 :ignore_root: false
 ```
 
+### Adding all Repositories in Directory:
+```
+grit add-all
+```
+
 ### Adding a Repository:
 ```
 grit add-repository new_name path/to/repo
