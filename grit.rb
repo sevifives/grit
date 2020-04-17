@@ -25,7 +25,7 @@ require 'fileutils'
 
 # Grit Class
 class Grit
-  VERSION = '2020.4.15'
+  VERSION = '2020.4.17'
 
   def version
     VERSION
@@ -57,7 +57,7 @@ class Grit
       unless File.exist?(config_file)
         config = {}
         config['root'] ||= location
-        config['repositories'] ||= [{ 'name' => 'example_repo', 'path' => 'example_repo' }]
+        config['repositories'] ||= []
         config['ignore_root'] = true
 
         File.open(directory + '/config.yml', 'w') { |f| YAML.dump(config, f) }
