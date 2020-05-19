@@ -72,6 +72,10 @@ class Grit
     directory = File.join(location, '.grit')
 
     if File.directory?(directory)
+      puts 'Are you sure? (y/n): '
+      input = $stdin.gets.strip
+      exit unless input.downcase == 'y'
+
       File.delete(directory + '/config.yml')
       Dir.delete(directory)
       puts "Grit configuration files have been removed from #{location}"
@@ -86,6 +90,9 @@ class Grit
     config
   rescue Psych::DisallowedClass
     puts 'Could not load config.  Probably need to perform a `grit convert-config` to string names'
+    exit 1
+  rescue Errno::ENOENT
+    puts 'Could not load config.  Are you sure this is a grit directory?'
     exit 1
   end
 
