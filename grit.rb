@@ -31,6 +31,9 @@ class Grit
     VERSION
   end
 
+  ###
+  # Display options for grit
+  ###
   def help
     puts "OPTIONS:\n\n"
     puts ' help                          - display list of commands'
@@ -46,6 +49,9 @@ class Grit
     puts " version                       - get current grit version\n\n"
   end
 
+  ###
+  # Create .grit dir and config.yml file
+  ###
   def initialize_grit(args)
     location = args[0] || Dir.pwd
 
@@ -67,6 +73,9 @@ class Grit
     end
   end
 
+  ###
+  # Remove .grit dir and config.yml
+  ###
   def destroy(args)
     location = args[0] || Dir.pwd
     directory = File.join(location, '.grit')
@@ -84,6 +93,9 @@ class Grit
     end
   end
 
+  ###
+  # Return current config as json
+  ###
   def load_config
     config = File.open(File.join(FileUtils.pwd, '.grit/config.yml')) { |f| YAML.safe_load(f) }
     config['repositories'].unshift('name' => 'Root', 'path' => config['root']) unless config['ignore_root']
@@ -96,15 +108,24 @@ class Grit
     exit 1
   end
 
+  ###
+  # Write config, passed in config as json, to disk as yaml
+  ###
   def write_config(config)
     File.open(File.join(FileUtils.pwd, '.grit/config.yml'), 'w') { |f| YAML.dump(config, f) }
   end
 
-  def config
+  ###
+  # Display config
+  ###
+  def display_config
     config = load_config
     puts config.to_yaml
   end
 
+  ###
+  # Convert config yaml from symbols to strings
+  ###
   def convert_config
     original_config = File.read(File.join(FileUtils.pwd, '.grit/config.yml'))
     new_config = YAML.safe_load(original_config.gsub(':repositories:', 'repositories:')
@@ -116,6 +137,9 @@ class Grit
     write_config(new_config)
   end
 
+  ###
+  # Add repository to config
+  ###
   def add_repository(args)
     config = load_config
     name = args[0]
@@ -132,6 +156,9 @@ class Grit
     end
   end
 
+  ###
+  # Add all repositories from a directory to the config
+  ###
   def add_all_repositories
     config = load_config
 
@@ -148,6 +175,9 @@ class Grit
     write_config(config)
   end
 
+  ###
+  # Clean out all missing directories from config
+  ###
   def clean_config
     config = load_config
 
@@ -159,11 +189,17 @@ class Grit
     write_config(config)
   end
 
+  ###
+  # Get a repository by name
+  ###
   def get_repository(name)
     config = load_config
     config['repositories'].detect { |f| f['name'] == name }
   end
 
+  ###
+  # Perform a git task on a specific repository
+  ###
   def perform_on(repo_name, args)
     repo = get_repository(repo_name)
     args = args.join(' ') unless args.class == String
@@ -178,6 +214,9 @@ class Grit
     end
   end
 
+  ###
+  # Remove a repository from config by name
+  ###
   def remove_repository(name)
     config = load_config
 
@@ -192,18 +231,24 @@ class Grit
     end
   end
 
-  def perform(to_do, name)
+  ###
+  # Perform a git task in current working directory.  repo_name is only for output reporting.
+  ###
+  def perform(git_task, repo_name)
     puts '-' * 80
-    puts "# #{name.upcase} -- git #{to_do}" unless name.nil?
-    puts `git #{to_do}`
+    puts "# #{repo_name.upcase} -- git #{git_task}" unless repo_name.nil?
+    puts `git #{git_task}`
     puts '-' * 80
     puts ''
   end
 
+  ###
+  # Perform git task on all respoitories in the config list
+  ###
   def proceed(args)
     config = load_config
 
-    to_do = args.map { |x| x.include?(' ') ? "\"#{x}\"" : x }.join(' ')
+    git_task = args.map { |x| x.include?(' ') ? "\"#{x}\"" : x }.join(' ')
 
     config['repositories'].each do |repo|
       if repo['path'].nil? || !File.exist?(repo['path'])
@@ -212,7 +257,7 @@ class Grit
       end
 
       Dir.chdir(repo['path']) do |_d|
-        perform(to_do, repo['name'])
+        perform(git_task, repo['name'])
       end
     end
   end
@@ -229,7 +274,7 @@ when 'add-repository'
 when 'add-all'
   grit.add_all_repositories
 when 'config'
-  grit.config
+  grit.display_config
 when 'clean-config'
   grit.clean_config
 when 'convert-config'
