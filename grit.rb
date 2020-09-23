@@ -25,7 +25,7 @@ require 'fileutils'
 
 # Grit Class
 class Grit
-  VERSION = '2020.4.17'
+  VERSION = '2020.9.23'
 
   def version
     VERSION
@@ -33,17 +33,17 @@ class Grit
 
   def help
     puts "OPTIONS:\n\n"
-    puts "\thelp                         - display list of commands"
-    puts "\tinit <dir> (optional)        - create grit config.yml file in .grit dir"
-    puts "\tadd-all                      - add all directories in the current directory to config.yml"
-    puts "\tconfig                       - show current config settings"
-    puts "\tclean-config                 - remove any missing direcotries from config.yml"
-    puts "\tconvert-config               - convert conf from sym to string"
-    puts "\tadd-repository <name> <dir>  - add repo and dir to config.yml"
-    puts "\tremove-repository <name>     - remove specified repo from config.yml"
-    puts "\tdestroy                      - delete current grit setup including config and .grit directory"
-    puts "\ton <repo> <action>           - execute git action on specific repo"
-    puts "\tversion                      - get current grit version\n\n"
+    puts ' help                          - display list of commands'
+    puts ' init <dir> (optional)         - create grit config.yml file in .grit dir'
+    puts ' add-all                       - add all directories in the current directory to config.yml'
+    puts ' config                        - show current config settings'
+    puts ' clean-config                  - remove any missing direcotries from config.yml'
+    puts ' convert-config                - convert conf from sym to string'
+    puts ' add-repository <name> <dir>   - add repo and dir to config.yml'
+    puts ' remove-repository <name>      - remove specified repo from config.yml'
+    puts ' destroy                       - delete current grit setup including config and .grit directory'
+    puts ' on <repo> <action>            - execute git action on specific repo'
+    puts " version                       - get current grit version\n\n"
   end
 
   def initialize_grit(args)

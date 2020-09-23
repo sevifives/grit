@@ -1,16 +1,12 @@
 ---
 Layout/LineLength:
   Max: 130
-
 Style/NumericLiterals:
   Enabled: false
-
 Metrics/ClassLength:
   Max: 200
-
 Metrics/MethodLength:
   Max: 25
-
 Metrics/AbcSize:
   Max: 20
 
@@ -19,8 +15,24 @@ Lint/RaiseException:
 Lint/StructNewOverride:
   Enabled: true
 Style/HashEachMethods:
-   Enabled: true
+  Enabled: true
 Style/HashTransformKeys:
-   Enabled: true
+  Enabled: true
 Style/HashTransformValues:
-   Enabled: true
+  Enabled: true
+Layout/EmptyLinesAroundAttributeAccessor:
+  Enabled: true
+Layout/SpaceAroundMethodCallOperator:
+  Enabled: true
+Lint/DeprecatedOpenSSLConstant:
+  Enabled: true
+Lint/MixedRegexpCaptureTypes:
+  Enabled: true
+Style/ExponentialNotation:
+  Enabled: true
+Style/RedundantRegexpCharacterClass:
+  Enabled: true
+Style/RedundantRegexpEscape:
+  Enabled: true
+Style/SlicingWithRange:
+  Enabled: true
