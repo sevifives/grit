@@ -1,31 +1,16 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
-# Grit is a way to manage multiple repos in a git repository seamlessly
-# using the git CL tool
-# It serves 'only' to be a mapping tool; it doesn't create/delete repositories
-# only .grit/config.yml
-
-# What Grit should do:
-# - Proxy the git API
-# - Not get in the way
-# - Allow the user to make the normal git choices due to that proxy
-
-# Sample config.yml
-# ---
-# root: /Users/john/dev/my_project
-# repositories:
-#   - name: Sproutcore
-#     path: frameworks/sproutcore
-#   - name: SCUI
-#     path: frameworks/scui
+###
+# Grit is a way to manage multiple repos in a git repository seamlessly using the git CLI tools
+###
 
 require 'yaml'
 require 'fileutils'
 
 # Grit Class
 class Grit
-  VERSION = '2020.9.23'
+  VERSION = '2021.1.19'
 
   def version
     VERSION
@@ -269,7 +254,7 @@ when 'help'
   grit.help
 when 'init'
   grit.initialize_grit(ARGV[1..-1])
-when 'add-repository'
+when /add-(repo|repository)/
   grit.add_repository(ARGV[1..-1])
 when 'add-all'
   grit.add_all_repositories
@@ -281,7 +266,7 @@ when 'convert-config'
   grit.convert_config
 when 'destroy'
   grit.destroy(ARGV[1..-1])
-when 'remove-repository'
+when /(rm|remove)-(repo|repository)/
   grit.remove_repository(ARGV[1])
 when 'on'
   grit.perform_on(ARGV[1], ARGV[2..-1])

@@ -1,5 +1,11 @@
 # Grit
-Grit is just a simple tool to align your multiple repositories. It's just a proxy for git commands to your main repo and your other repos.
+Grit is just a simple mapping tool to align your multiple repositories. It's just a proxy for git cli commands to your main repo and your other repos. It does not create/delete repositories.  It will only manage what is in your `.grit/config`.
+
+## Grits Goals
+
+* Proxy the git cli
+* Not get in the way
+* Allow the user to make the normal git choices
 
 ## Getting started:
 Clone the repo and put the executable in your PATH
