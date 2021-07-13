@@ -156,9 +156,9 @@ project = Grit.new
 case ARGV[0]
 when 'init'
   project.initialize_grit(ARGV[1..-1])
-when 'add-repository'
+when 'ar','add-repository'
   project.add_repository(ARGV[1..-1])
-when 'remove-repository'
+when 'rr','remove-repository'
   project.remove_repository(ARGV[1..-1])
 when 'ap','add-profile'
   project.add_profile(ARGV[1])
