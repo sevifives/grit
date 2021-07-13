@@ -54,6 +54,9 @@ class Grit
   def add_profile (profile = nil)
     return if profile == nil
 
+    location = Dir.pwd
+    directory = File.join(location,'.grit')
+    
     file = profile + ".yml"
     config_file = directory+'/'+file
     if !File.exists?(config_file)
