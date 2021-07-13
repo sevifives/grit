@@ -51,17 +51,17 @@ class Grit
     return open(File.join(FileUtils.pwd,f),'w') {|f| YAML.dump(config,f)}
   end
 
-  def add_profile (profile = nil)
+  def add_profile (profile = nil, root = nil)
     return if profile == nil
 
     location = Dir.pwd
     directory = File.join(location,'.grit')
-    
+
     file = profile + ".yml"
     config_file = directory+'/'+file
     if !File.exists?(config_file)
       config = {}
-      config[:root] ||= Dir.pwd
+      config[:root] ||= ((root == nil || root.empty?) ? Dir.pwd : root)
       config[:repositories] ||= []
 
       open(config_file,'w') {|f| YAML.dump(config,f)}
@@ -105,7 +105,10 @@ class Grit
 
   def get_current_profile
     location = Dir.pwd
-    return File.read(".grit/current_profile")
+    if (!File.exists?(".grit/current_profile")) {
+      return File.read(".grit/current_profile")  
+    }
+    return "config"
   end
 
   # opting to not remove the directory
@@ -164,7 +167,7 @@ when 'ar','add-repository'
 when 'rr','remove-repository'
   project.remove_repository(ARGV[1..-1])
 when 'ap','add-profile'
-  project.add_profile(ARGV[1])
+  project.add_profile(ARGV[1], ARGV[2])
 when 'sp','set-profile'
   project.set_profile(ARGV[1])
 when 'wp','which-profile'
