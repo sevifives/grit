@@ -105,7 +105,7 @@ class Grit
 
   def get_current_profile
     location = Dir.pwd
-    if (!File.exists?(".grit/current_profile"))
+    if (File.exists?(".grit/current_profile"))
       return File.read(".grit/current_profile")  
     end
     return "config"
