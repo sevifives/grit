@@ -32,25 +32,37 @@ class Grit
       directory = File.join(location,'.grit')
       FileUtils.mkdir(directory) unless File.directory?(directory)
 
-      config_file = directory+'/config.yml'
-      if !File.exists?(config_file)
-        config = {}
-        config[:root] ||= Dir.pwd
-        config[:repositories] ||= []
-
-        open(directory+'/config.yml','w') {|f| YAML.dump(config,f)}
-      end
+      add_profile("config")
+      set_profile("config")
     else
       puts "Directory doesn't exist!"
     end
   end
 
-  def get_config
-    return open(File.join(FileUtils.pwd,'.grit/config.yml')) {|f| YAML.load(f)}
+  def get_config(profile=nil)
+    profile = get_current_profile if profile == nil
+    f = ".grit/#{profile}.yml" % {:profile => profile}
+    return open(File.join(FileUtils.pwd,f)) {|f| YAML.load(f)}
   end
 
-  def write_config (config)
-    return open(File.join(FileUtils.pwd,'.grit/config.yml'),'w') {|f| YAML.dump(config,f)}
+  def write_config (config, profile = nil)
+    profile = get_current_profile if profile == nil
+    f = ".grit/#{profile}.yml" % {:profile => profile}
+    return open(File.join(FileUtils.pwd,f),'w') {|f| YAML.dump(config,f)}
+  end
+
+  def add_profile (profile = nil)
+    return if profile == nil
+
+    file = profile + ".yml"
+    config_file = directory+'/'+file
+    if !File.exists?(config_file)
+      config = {}
+      config[:root] ||= Dir.pwd
+      config[:repositories] ||= []
+
+      open(config_file,'w') {|f| YAML.dump(config,f)}
+    end
   end
 
   def add_repository (args)
@@ -78,6 +90,19 @@ class Grit
     Dir.chdir(repo[:path]) do |d|
       perform(args,repo[:name])
     end
+  end
+
+  def set_profile(profile = "config")
+    profile = "config" if (profile == nil || profile.empty?)
+    location = Dir.pwd
+    f = File.new(".grit/current_profile", 'w')
+    f.write(profile)
+    f.close
+  end
+
+  def get_current_profile
+    location = Dir.pwd
+    return File.read(".grit/current_profile")
   end
 
   # opting to not remove the directory
@@ -135,6 +160,12 @@ when 'add-repository'
   project.add_repository(ARGV[1..-1])
 when 'remove-repository'
   project.remove_repository(ARGV[1..-1])
+when 'ap','add-profile'
+  project.add_profile(ARGV[1])
+when 'sp','set-profile'
+  project.set_profile(ARGV[1])
+when 'wp','which-profile'
+  puts project.get_current_profile
 when 'on'
   project.perform_on(ARGV[1],ARGV[2..-1])
 else
