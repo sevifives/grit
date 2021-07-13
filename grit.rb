@@ -114,15 +114,14 @@ class Grit
   # opting to not remove the directory
   def remove_repository (names)
     config = get_config
-    puts config.inspect
 
     match = get_repository(names[0])
     unless match.nil?
       if config[:repositories].delete(match)
         write_config(config)
-        puts "Removed repository #{name} from grit"
+        puts "Removed repository #{match} from grit"
       else
-        puts "Unable to remove repository #{name}"
+        puts "Unable to remove repository #{match}"
       end
     else
       puts "Could not find repository"
