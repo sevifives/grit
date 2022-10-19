@@ -11,7 +11,6 @@ Grit is just a simple mapping tool to align your multiple repositories. It's jus
 Clone the repo and put the executable in your PATH
 ```
 git clone https://github.com/mlintern/grit.git ~/.grit
-chmod +x ~/.grit/grit.rb
 ln -s ~/.grit/grit.rb /usr/local/bin/grit
 ```
 
@@ -83,9 +82,13 @@ nothing to commit (working directory clean)
 grit on REPO_NAME_CASE GIT_OPERATION will perform that operation on the repo you want
 ```
 [master][~/proj-root]$ grit on spectre status
-# sproutcore$ git st
-# On branch master
-nothing to commit (working directory clean)
+--------------------------------------------------------------------------------
+# SPECTRE -- git status
+On branch master
+Your branch is up to date with 'origin/master'.
+
+nothing to commit, working tree clean
+--------------------------------------------------------------------------------
 ```
 
 ### Cleanup Grit Project
@@ -99,3 +102,5 @@ grit destroy will remove the .grit directory and config
 git config --global core.excludesfile ~/.gitignore
 echo ".grit/" >> ~/.gitignore
 ```
+
+Updated: 2022.10.19
