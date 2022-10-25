@@ -9,7 +9,6 @@
 # - Proxy the git API
 # - Don't get in the way
 # - Allow the user to make the normal git choices due to that proxy
-# - Not require a bunch of retarded crap like Google's git-repo to get started
 
 # Sample config.yml
 # ---
